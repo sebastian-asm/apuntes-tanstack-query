@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { FiInfo, FiMessageSquare, FiCheckCircle } from 'react-icons/fi'
 
 import { GithubIssue, State } from '../interfaces'
+// import { getIssue, getIssueComments } from '../actions'
 
 interface Props {
   issue: GithubIssue
@@ -9,8 +11,36 @@ interface Props {
 
 export const IssueItem = ({ issue }: Props) => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  // obteniendo los datos al momento de hacer hover con el mouse
+  // const prefetchData = () => {
+  //   queryClient.prefetchQuery({
+  //     queryKey: ['issue', issue.number],
+  //     queryFn: () => getIssue(issue.number),
+  //     staleTime: 1000 * 60
+  //   })
+
+  //   queryClient.prefetchQuery({
+  //     queryKey: ['issue', issue.number, 'comments'],
+  //     queryFn: () => getIssueComments(issue.number),
+  //     staleTime: 1000 * 60
+  //   })
+  // }
+
+  // asignando la data a una key
+  const presetData = () => {
+    queryClient.setQueryData(['issue', issue.number], issue, {
+      updatedAt: Date.now() + 1000 * 60
+    })
+  }
+
   return (
-    <div className="flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800">
+    <div
+      onMouseEnter={presetData}
+      // onMouseEnter={prefetchData}
+      className="flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800"
+    >
       {issue.state === State.Close ? (
         <FiCheckCircle size={30} color="green" className="min-w-10" />
       ) : (

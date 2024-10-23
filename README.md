@@ -4,6 +4,7 @@ Hay que tener en claro que no hace peticiones HTTP, ya que su principal ayuda es
 
 - **Queries**: puede ser cualquier promesa
 - **Mutations**: promesas pero que están relacionadas a modificaciones mediante POST, PUT, PATH o DELETE
+- **Fresh**: la información se considera "fresca" quedando almacenada en cache el tiempo indicado en la propiedad `staleTime`, esto evita que se haga nuevamente la consulta.
 
 **_Créditos_**
 

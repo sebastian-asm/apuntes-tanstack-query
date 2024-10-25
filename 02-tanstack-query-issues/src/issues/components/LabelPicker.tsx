@@ -1,7 +1,12 @@
 import { useLabels } from '../../hooks'
 import { Loading } from '../../shared'
 
-export const LabelPicker = () => {
+interface Props {
+  selectedLabels: string[]
+  onLabelSelected: (label: string) => void
+}
+
+export const LabelPicker = ({ selectedLabels, onLabelSelected }: Props) => {
   const { labelsQuery } = useLabels()
   if (labelsQuery.isLoading) return <Loading />
 
@@ -11,7 +16,11 @@ export const LabelPicker = () => {
         {labelsQuery.data?.map((label) => (
           <span
             key={label.id}
-            className="animate-fadeIn px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer"
+            onClick={() => onLabelSelected(label.name)}
+            className={`
+              ${selectedLabels.includes(label.name) ? 'selected-label' : ''}
+              animate-fadeIn px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer
+            `}
             style={{ border: `1px solid #${label.color}`, color: `#${label.color}` }}
           >
             {label.name}

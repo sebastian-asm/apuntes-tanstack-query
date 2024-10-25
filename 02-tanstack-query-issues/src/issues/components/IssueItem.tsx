@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FiInfo, FiMessageSquare, FiCheckCircle } from 'react-icons/fi'
 
 import { GithubIssue, State } from '../interfaces'
+import { timeSince } from '../../helpers'
 // import { getIssue, getIssueComments } from '../actions'
 
 interface Props {
@@ -51,8 +52,20 @@ export const IssueItem = ({ issue }: Props) => {
           {issue.title}
         </a>
         <span className="text-gray-500">
-          #{issue.number} opened 2 days ago by <span className="font-bold">{issue.user.login}</span>
+          #{issue.number} opened {timeSince(issue.created_at)} ago by{' '}
+          <span className="font-bold">{issue.user.login}</span>
         </span>
+        <div className="mt-2">
+          {issue.labels.map((label) => (
+            <small
+              key={label.id}
+              className="p-1 mr-2 text-gray-200 rounded"
+              style={{ border: `1px solid #${label.color}` }}
+            >
+              {label.name}
+            </small>
+          ))}
+        </div>
       </div>
       <img src={issue.user.avatar_url} alt="User Avatar" className="w-8 h-8 rounded-full" />
       <div className="flex flex-col mx-2 items-center">
